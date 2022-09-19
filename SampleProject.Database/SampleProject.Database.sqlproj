@@ -66,5 +66,21 @@
     <Build Include="dbo\Tables\ExceptionLog.sql" />
     <Build Include="dbo\Tables\Roles.sql" />
     <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\Customers.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CreateRoleIfNotExists.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CheckUserExistence.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CreateUser.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CreateExceptionLog.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetAllUsers.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetUserDetailsByEmail.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetUserDetailsByGuid.sql" />
+    <Build Include="dbo\Stored Procedures\usp_UpdateUser.sql" />
+    <Build Include="dbo\Stored Procedures\usp_DeleteUser.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetAllRoles.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetAllCustomers.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetCustomerDetailsByGuid.sql" />
+    <Build Include="dbo\Stored Procedures\usp_DeleteCustomer.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CreateCustomer.sql" />
+    <Build Include="dbo\Stored Procedures\usp_UpdateCustomer.sql" />
   </ItemGroup>
 </Project>
