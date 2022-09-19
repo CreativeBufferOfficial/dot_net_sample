@@ -1,0 +1,493 @@
+{
+	"info": {
+		"_postman_id": "e7e5e4cc-d321-4af7-8154-24bfbbbeb943",
+		"name": "Sample Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23233624"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@gmail.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/User/Login",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"User",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Admin1\",\r\n    \"lastName\": \"\",\r\n    \"phoneNumber\": \"\",\r\n    \"email\": \"admin1@gmail.com\",\r\n    \"password\": \"Admin@123\",\r\n    \"roleId\": 1,\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/User",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userGuid\": \"0055bee4-81ab-49b5-8eea-64756cefed7d\",\r\n    \"firstName\": \"Admin12\",\r\n    \"lastName\": \"Admin12\",\r\n    \"phoneNumber\": \"\",\r\n    \"roleId\": 1,\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/User",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an existing user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userGuid\": \"0055bee4-81ab-49b5-8eea-64756cefed7d\",\r\n    \"firstName\": \"Admin12\",\r\n    \"lastName\": \"Admin12\",\r\n    \"phoneNumber\": \"\",\r\n    \"roleId\": 1,\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/User",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/User",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Deleted Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/User/true",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"User",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Valid Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/User/false",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"User",
+								"false"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Get All Roles",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Get All Customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/Customer/All",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Customer",
+								"All"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Valid Customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/Customer/All/false",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Customer",
+								"All",
+								"false"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Deleted Customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/Customer/All/true",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Customer",
+								"All",
+								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer Details by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/Customer/7f1c14c9-c35a-4a35-aea7-d4f386fb5248",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Customer",
+								"7f1c14c9-c35a-4a35-aea7-d4f386fb5248"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an existing customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/Customer/7f1c14c9-c35a-4a35-aea7-d4f386fb5248",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Customer",
+								"7f1c14c9-c35a-4a35-aea7-d4f386fb5248"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerName\": \"Test Customer\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"testcutsomer@gmail.com\",\r\n    \"address\": \"#001 test colony\",\r\n    \"city\": \"Test City\",\r\n    \"state\": \"Test State\",\r\n    \"country\": \"Test Country\",\r\n    \"zip\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/Customer",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an existing customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerName\": \"Test Customer Update\",\r\n    \"phoneNumber\": \"0123456789\",\r\n    \"email\": \"testcutsomerUpdtae@gmail.com\",\r\n    \"address\": \"#001 test colony update\",\r\n    \"city\": \"Test City Updfate\",\r\n    \"state\": \"Test State Update\",\r\n    \"country\": \"Test Country Update\",\r\n    \"zip\": \"123450\",\r\n    \"customerGuid\": \"7F1C14C9-C35A-4A35-AEA7-D4F386FB5248\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/api/v1/Customer",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Customer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

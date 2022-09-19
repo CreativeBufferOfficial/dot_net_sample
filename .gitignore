@@ -1,0 +1,23 @@
+*.user
+*.suo
+*.v2
+/.vs
+/.vs/
+
+SampleProject.API/bin/
+SampleProject.API/obj/
+
+SampleProject.Common/bin/
+SampleProject.Common/obj/
+
+SampleProject.Data/bin/
+SampleProject.Data/obj/
+
+SampleProject.Database/bin/
+SampleProject.Database/obj/
+SampleProject.Database/Import Schema Logs
+SampleProject.Database/*.jfm
+SampleProject.Database/*.dbmdl
+
+SampleProject.Service/bin/
+SampleProject.Service/obj/
