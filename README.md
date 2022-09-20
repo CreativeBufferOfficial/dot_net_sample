@@ -17,6 +17,8 @@ Once the tools are installed, follow below steps to run the code on your local m
 1. Clone the Project's repo on your local machine.
 2. Using the SampleProject.Database project (included with-in the application), Create a database on your machine.
 3. Replace the connection string in the appsettings.json file (to run code in Release mode (Ctrl+F5)) and appsettings.Development.json file (to run code in Debug mode (F5)) - file can be found under SampleProject.API project.
+4. Using Swagger you can execute and test the APIs.
+5. If someone having familarity with Postman, he/she can import the Postman Collection using the Sample Project.postman_collection.json (found in the project directory)
 
 # Contribute
 For any queries and suggestions, kindly raise a issue. 
@@ -24,4 +26,3 @@ For any queries and suggestions, kindly raise a issue.
 If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
 - [ASP.NET Core](https://github.com/aspnet/Home)
 - [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
