@@ -41,16 +41,9 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<IEnumerable<RoleViewModel>>> GetAllRoles()
         {
             var serviceResult = new ServiceResult<IEnumerable<RoleViewModel>>();
-            try
-            {
-                var usersList = await _roleRepository.GetAllRoles();
 
-                serviceResult.SetData(usersList);
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            serviceResult.SetData(await _roleRepository.GetAllRoles());
+
             return serviceResult;
         }
     }
