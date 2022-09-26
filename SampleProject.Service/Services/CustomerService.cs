@@ -33,22 +33,17 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<Guid>> CreateCustomer(CreateCustomerRequestModel model, int userId)
         {
             var serviceResult = new ServiceResult<Guid>();
-            try
-            {
-                var customerModel = _mapper.Map<CustomerModel>(model);
-                customerModel.CreatedBy = userId;
 
-                var result = await _customerRepository.CreateCustomer(customerModel);
+            var customerModel = _mapper.Map<CustomerModel>(model);
+            customerModel.CreatedBy = userId;
 
-                if (result > 0)
-                    serviceResult.SetData(customerModel.CustomerGuid);
-                else
-                    throw new Exception("Failed to create customer.");
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            var result = await _customerRepository.CreateCustomer(customerModel);
+
+            if (result > 0)
+                serviceResult.SetSuccess(customerModel.CustomerGuid, "Customer created successfully");
+            else
+                serviceResult.SetError("Failed to create customer.");
+
             return serviceResult;
         }
 
@@ -63,19 +58,14 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<bool>> DeleteCustomer(Guid customerGuid, int userId)
         {
             var serviceResult = new ServiceResult<bool>();
-            try
-            {
-                var result = await _customerRepository.DeleteCustomer(new CustomerModel { ModifiedBy = userId, ModifiedDateUtc = DateTime.UtcNow, CustomerGuid = customerGuid });
 
-                if (result > 0)
-                    serviceResult.SetData(result > 0);
-                else
-                    throw new Exception("Failed to delete customer.");
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            var result = await _customerRepository.DeleteCustomer(new CustomerModel { ModifiedBy = userId, ModifiedDateUtc = DateTime.UtcNow, CustomerGuid = customerGuid });
+
+            if (result > 0)
+                serviceResult.SetSuccess(result > 0, "Customer deleted successfully");
+            else
+                serviceResult.SetError("Failed to delete customer.");
+
             return serviceResult;
         }
 
@@ -87,16 +77,9 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<IEnumerable<CustomerViewModel>>> GetAllCustomers(bool? showDeleted)
         {
             var serviceResult = new ServiceResult<IEnumerable<CustomerViewModel>>();
-            try
-            {
-                var customersList = await _customerRepository.GetAllCustomers(showDeleted);
 
-                serviceResult.SetData(customersList);
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            serviceResult.SetData(await _customerRepository.GetAllCustomers(showDeleted));
+
             return serviceResult;
         }
 
@@ -108,19 +91,14 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<CustomerViewModel>> GetCustomerDetailsByGuid(Guid customerGuid)
         {
             var serviceResult = new ServiceResult<CustomerViewModel>();
-            try
-            {
-                var customerDetails = await _customerRepository.GetCustomerDetailsByGuid(customerGuid);
 
-                if (customerDetails == null)
-                    throw new Exception("No customer found with provided details");
-                else
-                    serviceResult.SetData(customerDetails);
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            var customerDetails = await _customerRepository.GetCustomerDetailsByGuid(customerGuid);
+
+            if (customerDetails == null)
+                serviceResult.SetError("No customer found with provided details");
+            else
+                serviceResult.SetData(customerDetails);
+
             return serviceResult;
         }
 
@@ -135,26 +113,23 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<bool>> UpdateCustomer(UpdateCustomerRequestModel model, int userId)
         {
             var serviceResult = new ServiceResult<bool>();
-            try
+
+            var existingCustomer = await _customerRepository.GetCustomerDetailsByGuid(model.CustomerGuid);
+
+            if (existingCustomer == null)
+                throw new Exception("No customer found with the provided data.");
+            else
             {
-                var existingCustomer = await _customerRepository.GetCustomerDetailsByGuid(model.CustomerGuid);
-
-                if (existingCustomer == null)
-                    throw new Exception("No customer found with the provided data.");
-
                 var customerModel = _mapper.Map<CustomerModel>(model);
                 customerModel.ModifiedBy = userId;
                 var result = await _customerRepository.UpdateCustomer(customerModel);
 
                 if (result > 0)
-                    serviceResult.SetData(result > 0);
+                    serviceResult.SetSuccess(result > 0, "Customer updated successfully");
                 else
-                    throw new Exception("Failed to update customer.");
+                    serviceResult.SetError("Failed to update customer.");
             }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+
             return serviceResult;
         }
     }

@@ -45,13 +45,13 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<Guid>> CreateUser(CreateUserRequestModel model, int userId)
         {
             var serviceResult = new ServiceResult<Guid>();
-            try
+
+            var exists = await _userRepository.CheckUserExistence(model.Email);
+
+            if (exists)
+                serviceResult.SetError("User with the provided email already exists");
+            else
             {
-                var exists = await _userRepository.CheckUserExistence(model.Email);
-
-                if (exists)
-                    throw new Exception("User with the provided email already exists");
-
                 var userModel = _mapper.Map<UserModel>(model);
                 userModel.CreatedBy = userId;
                 userModel.PasswordHash = BlowFishEncrypt.HashPassword(model.Password);
@@ -59,14 +59,11 @@ namespace SampleProject.Service.Services
                 var result = await _userRepository.CreateUser(userModel);
 
                 if (result > 0)
-                    serviceResult.SetData(userModel.UserGuid);
+                    serviceResult.SetSuccess(userModel.UserGuid, "User created successfully");
                 else
-                    throw new Exception("Failed to create user.");
+                    serviceResult.SetError("Failed to create user.");
             }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+
             return serviceResult;
         }
 
@@ -80,29 +77,24 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<LoginResponseModel>> AuthenticateUser(LoginRequestModel model)
         {
             var serviceResult = new ServiceResult<LoginResponseModel>();
-            try
-            {
-                // get user details by email
-                var userDetails = await _userRepository.GetUserDetailsByEmail(model.Email);
 
-                if (userDetails == null || !BlowFishEncrypt.Verify(model.Password, userDetails.PasswordHash))
-                    throw new Exception("Invalid user name or password");
+            // get user details by email
+            var userDetails = await _userRepository.GetUserDetailsByEmail(model.Email);
 
-                if (!userDetails.IsActive)
-                    throw new Exception("Account is not active yet");
+            if (userDetails == null || !BlowFishEncrypt.Verify(model.Password, userDetails.PasswordHash))
+                serviceResult.SetError("Invalid user name or password");
 
-                // generate JWT token
-                var tokenDetails = GetAuthorizationToken(userDetails);
+            if (!userDetails.IsActive)
+                serviceResult.SetError("Account is not active yet");
 
-                if (tokenDetails != null)
-                    serviceResult.SetData(tokenDetails);
-                else
-                    throw new Exception("Some error occured. Please contact administrator");
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            // generate JWT token
+            var tokenDetails = GetAuthorizationToken(userDetails);
+
+            if (tokenDetails != null)
+                serviceResult.SetSuccess(tokenDetails, "Login successful");
+            else
+                serviceResult.SetError("Some error occured. Please contact administrator");
+
             return serviceResult;
         }
 
@@ -114,16 +106,9 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<IEnumerable<UserViewModel>>> GetAllUsers(bool? showDeleted)
         {
             var serviceResult = new ServiceResult<IEnumerable<UserViewModel>>();
-            try
-            {
-                var usersList = await _userRepository.GetAllUsers(showDeleted);
 
-                serviceResult.SetData(usersList);
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            serviceResult.SetData(await _userRepository.GetAllUsers(showDeleted));
+
             return serviceResult;
         }
 
@@ -138,27 +123,24 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<bool>> UpdateUser(UpdateUserRequestModel model, int userId)
         {
             var serviceResult = new ServiceResult<bool>();
-            try
+
+            // authenticate user in the database
+            var userDetails = await _userRepository.GetUserDetailsByGuid(model.UserGuid);
+
+            if (userDetails == null)
+                serviceResult.SetError("No user found with provided details");
+            else
             {
-                // authenticate user in the database
-                var userDetails = await _userRepository.GetUserDetailsByGuid(model.UserGuid);
-
-                if (userDetails == null)
-                    throw new Exception("No user found with provided details");
-
                 var userModel = _mapper.Map<UserModel>(model);
                 userModel.ModifiedBy = userId;
                 var result = await _userRepository.UpdateUser(userModel);
 
                 if (result > 0)
-                    serviceResult.SetData(result > 0);
+                    serviceResult.SetSuccess(result > 0, "User updated successfully");
                 else
-                    throw new Exception("Failed to update user.");
+                    serviceResult.SetError("Failed to update user.");
             }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+
             return serviceResult;
         }
 
@@ -170,19 +152,14 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<UserViewModel>> GetUserDetailsByGuid(Guid userGuid)
         {
             var serviceResult = new ServiceResult<UserViewModel>();
-            try
-            {
-                var userDetails = await _userRepository.GetUserDetailsByGuid(userGuid);
 
-                if (userDetails == null)
-                    throw new Exception("No user found with provided details");
-                else
-                    serviceResult.SetData(userDetails);
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            var userDetails = await _userRepository.GetUserDetailsByGuid(userGuid);
+
+            if (userDetails == null)
+                serviceResult.SetError("No user found with provided details");
+            else
+                serviceResult.SetData(userDetails);
+
             return serviceResult;
         }
 
@@ -197,19 +174,14 @@ namespace SampleProject.Service.Services
         public async Task<ServiceResult<bool>> DeleteUser(Guid userGuid, int userId)
         {
             var serviceResult = new ServiceResult<bool>();
-            try
-            {
-                var result = await _userRepository.DeleteUser(new UserModel { ModifiedBy = userId, ModifiedDateUtc = DateTime.UtcNow, UserGuid = userGuid });
 
-                if (result > 0)
-                    serviceResult.SetData(result > 0);
-                else
-                    throw new Exception("Failed to delete user.");
-            }
-            catch (Exception ex)
-            {
-                serviceResult.SetError(!string.IsNullOrEmpty(ex.Message) ? ex.Message : ex.InnerException.Message);
-            }
+            var result = await _userRepository.DeleteUser(new UserModel { ModifiedBy = userId, ModifiedDateUtc = DateTime.UtcNow, UserGuid = userGuid });
+
+            if (result > 0)
+                serviceResult.SetSuccess(result > 0, "User deleted successfully");
+            else
+                serviceResult.SetError("Failed to delete user.");
+
             return serviceResult;
         }
 

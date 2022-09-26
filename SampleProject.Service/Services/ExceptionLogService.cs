@@ -25,7 +25,6 @@ namespace SampleProject.Service.Services
         /// <param name="userId"></param>
         /// <param name="methodName"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task SaveError(Exception exception, int? userId)
         {
             await _exceptionLogRepository.CreateExceptionLog(new ExceptionModel

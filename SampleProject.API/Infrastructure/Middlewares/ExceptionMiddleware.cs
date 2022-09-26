@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SampleProject.Service.Interfaces;
+using System.Data.SqlClient;
 using System.Net;
 
 namespace SampleProject.API.Infrastructure.Middlewares
@@ -49,11 +50,11 @@ namespace SampleProject.API.Infrastructure.Middlewares
             // save occured exception in our DB
             await _exceptionLogService.SaveError(exception, !string.IsNullOrEmpty(context.User.Identity?.Name) ? int.Parse(context.User.Identity.Name) : null);
 
-            if (exception is DbUpdateException)
+            if (exception is DbUpdateException || exception is SqlException)
             {
                 await BuildResponse(context, HttpStatusCode.BadRequest, exception.Message);
             }
-            if (exception is ApplicationException)
+            else if (exception is ApplicationException)
             {
                 await BuildResponse(context, HttpStatusCode.NotFound, exception.Message);
             }
