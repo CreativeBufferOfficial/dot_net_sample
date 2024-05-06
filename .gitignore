@@ -21,3 +21,7 @@ SampleProject.Database/*.dbmdl
 
 SampleProject.Service/bin/
 SampleProject.Service/obj/
+
+SampleProject.UI/bin/
+SampleProject.UI/obj/
+SampleProject.UI/package-lock.json
